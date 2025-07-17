@@ -1,7 +1,7 @@
 import React from 'react';
 import { Play, Pause, Heart, MoreHorizontal } from 'lucide-react';
 import { Song, getArtistById, getAlbumById, formatDuration } from '../data/musicDatabase';
-import { useMusicContext } from '../contexts/MusicContext';
+import { useMusicContext } from '../hooks/useMusicContext';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
 

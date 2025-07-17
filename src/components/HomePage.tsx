@@ -8,7 +8,7 @@ import {
   getTopSongs, 
   getRecentlyPlayed 
 } from '../data/musicDatabase';
-import { useMusicContext } from '../contexts/MusicContext';
+import { useMusicContext } from '../hooks/useMusicContext';
 
 export const HomePage: React.FC = () => {
   const { recentlyPlayed } = useMusicContext();

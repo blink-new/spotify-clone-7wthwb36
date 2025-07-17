@@ -1,7 +1,7 @@
 import React from 'react';
 import { Play, Pause } from 'lucide-react';
 import { Album, Playlist, Artist, getArtistById, getSongsByAlbum } from '../data/musicDatabase';
-import { useMusicContext } from '../contexts/MusicContext';
+import { useMusicContext } from '../hooks/useMusicContext';
 import { Button } from './ui/button';
 import { cn } from '../lib/utils';
 
@@ -42,16 +42,19 @@ export const MediaCard: React.FC<MediaCardProps> = ({ item, type, className }) =
 
   const getSubtitle = () => {
     switch (type) {
-      case 'album':
+      case 'album': {
         const album = item as Album;
         const artist = getArtistById(album.artistId);
         return artist?.name || 'Unknown Artist';
-      case 'playlist':
+      }
+      case 'playlist': {
         const playlist = item as Playlist;
         return `${playlist.songIds.length} songs`;
-      case 'artist':
+      }
+      case 'artist': {
         const artistItem = item as Artist;
         return `${(artistItem.followers / 1000000).toFixed(1)}M followers`;
+      }
       default:
         return '';
     }

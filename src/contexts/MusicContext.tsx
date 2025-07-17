@@ -1,55 +1,9 @@
+/* eslint-disable react-refresh/only-export-components */
 import React, { createContext, useContext, useState, useCallback, ReactNode } from 'react';
-import { Song, Playlist, getArtistById, getSongById, formatDuration } from '../data/musicDatabase';
+import { Song, Playlist } from '../data/musicDatabase';
+import { MusicContextType, shuffleArray } from '../utils/music';
 
-interface MusicContextType {
-  // Current playback state
-  currentSong: Song | null;
-  isPlaying: boolean;
-  currentTime: number;
-  duration: number;
-  volume: number;
-  isMuted: boolean;
-  isShuffled: boolean;
-  repeatMode: 'off' | 'all' | 'one';
-  
-  // Queue management
-  queue: Song[];
-  currentIndex: number;
-  
-  // Playback controls
-  playSong: (song: Song, queue?: Song[], startIndex?: number) => void;
-  pauseSong: () => void;
-  resumeSong: () => void;
-  nextSong: () => void;
-  previousSong: () => void;
-  seekTo: (time: number) => void;
-  setVolume: (volume: number) => void;
-  toggleMute: () => void;
-  toggleShuffle: () => void;
-  toggleRepeat: () => void;
-  
-  // Playlist management
-  currentPlaylist: Playlist | null;
-  setCurrentPlaylist: (playlist: Playlist | null) => void;
-  
-  // Liked songs
-  likedSongs: Set<string>;
-  toggleLikeSong: (songId: string) => void;
-  
-  // Recently played
-  recentlyPlayed: Song[];
-  addToRecentlyPlayed: (song: Song) => void;
-}
-
-const MusicContext = createContext<MusicContextType | undefined>(undefined);
-
-export const useMusicContext = () => {
-  const context = useContext(MusicContext);
-  if (!context) {
-    throw new Error('useMusicContext must be used within a MusicProvider');
-  }
-  return context;
-};
+export const MusicContext = createContext<MusicContextType | undefined>(undefined);
 
 interface MusicProviderProps {
   children: ReactNode;
@@ -78,15 +32,7 @@ export const MusicProvider: React.FC<MusicProviderProps> = ({ children }) => {
   const [likedSongs, setLikedSongs] = useState<Set<string>>(new Set());
   const [recentlyPlayed, setRecentlyPlayed] = useState<Song[]>([]);
 
-  // Shuffle array utility
-  const shuffleArray = <T,>(array: T[]): T[] => {
-    const shuffled = [...array];
-    for (let i = shuffled.length - 1; i > 0; i--) {
-      const j = Math.floor(Math.random() * (i + 1));
-      [shuffled[i], shuffled[j]] = [shuffled[j], shuffled[i]];
-    }
-    return shuffled;
-  };
+
 
   const playSong = useCallback((song: Song, newQueue?: Song[], startIndex?: number) => {
     setCurrentSong(song);
